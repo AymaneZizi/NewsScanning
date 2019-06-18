@@ -6,7 +6,7 @@ import datetime
 import feedparser
 import pandas as pd
 
-import spacy
+import spacy #python -m spacy download en
 from tqdm import tqdm
 import time
 import pickle
@@ -90,7 +90,6 @@ class classify:
 		def lemmatize(text):
 		
 			#import spaCy's language model
-			#python -m spacy download en
 			nlp = spacy.load('en', disable=['parser', 'ner'])
 				
 			output = []
@@ -164,65 +163,57 @@ class classify:
 		pickle_in = open("elmo_test_03032019.pickle", "rb")
 		elmo_test_new = pickle.load(pickle_in)
 		
-		'''
-		spaCy or something has a gpu import error
-		'''
 		pass
 		
-def fetch_articles():
+def fetch_articles(MAX_RESULTS=100):
 
-	today = datetime.datetime.now().strftime('%Y-%m-%d')
+    today = datetime.datetime.now().strftime('%Y-%m-%d')
 
-	'''//////////////////////////////
-	-- list of feeds to scrape --
-	//////////////////////////////'''
+    '''//////////////////////////////
+    -- list of feeds to scrape --
+    //////////////////////////////'''
 	
-	rss = ['https://www.globenewswire.com/RssFeed/subjectcode/13-Earnings%20Releases%20And%20Operating%20Results/feedTitle/GlobeNewswire%20-%20Earnings%20Releases%20And%20Operating%20Results'
-		,'https://www.yahoo.com/news/rss/'
-		,'http://newsrss.bbc.co.uk/rss/newsonline_uk_edition/front_page/rss.xml'
-		,'https://news.google.com/rss/topics/CAAqJggKIiBDQkFTRWdvSUwyMHZNRGx1YlY4U0FtVnVHZ0pWVXlnQVAB?hl=en-US&gl=US&ceid=US:en'
-		,'http://feeds.reuters.com/reuters/businessNews'
-		,'http://feeds.reuters.com/reuters/companyNews'
-		,'http://feeds.reuters.com/Reuters/worldNews'
-		,'https://rss.cbc.ca/lineup/canada-calgary.xml'
-		,'https://rss.cbc.ca/lineup/canada-edmonton.xml'
-		,'https://rss.cbc.ca/lineup/business.xml'
-		,'https://rss.cbc.ca/lineup/politics.xml'
-		,'https://www.theglobeandmail.com/?service=rss'
-		,'http://feeds.feedburner.com/FP_TopStories'
-		,'https://o.canada.com/feed/'
-		,'https://www.dailyheraldtribune.com/feed'
-		,'https://www.bankofcanada.ca/valet/fx_rss/FXUSDCAD'
-		,'https://www.bankofcanada.ca/content_type/bos/feed/'
-		,'https://www.jasper-alberta.com/RSSFeed.aspx?ModID=76&CID=All-0'
-		,'https://www.highriveronline.com/rss/news'
-		,'https://www.highriveronline.com/rss/ag-news'
-		,'https://www.highlevel.ca/RSSFeed.aspx?ModID=76&CID=All-0'
-		,'https://www.cochrane.ca/RSSFeed.aspx?ModID=76&CID=All-0'
-		,'http://banff.ca/support/pages.xml'
-		,'https://www.wetaskiwin.ca/RSSFeed.aspx?ModID=76&CID=All-0'
-		,'https://mdbighorn.ca/RSSFeed.aspx?ModID=76&CID=All-0'
-		,'https://www.brooks.ca/RSSFeed.aspx?ModID=76&CID=All-0'
-		,'https://discoverairdrie.com/rss/news'
-		,'https://lacombeonline.com/rss/news'
-		,'https://www.mdtaber.ab.ca/RSSFeed.aspx?ModID=76&CID=All-0'
-		,'https://www.nanton.ca/RSSFeed.aspx?ModID=76&CID=All-0'
-		]
+    rss = [
+        'https://www.yahoo.com/news/rss/'
+        ,'https://www.globenewswire.com/RssFeed/subjectcode/13-Earnings%20Releases%20And%20Operating%20Results/feedTitle/GlobeNewswire%20-%20Earnings%20Releases%20And%20Operating%20Results'
+        ,'http://newsrss.bbc.co.uk/rss/newsonline_uk_edition/front_page/rss.xml'
+        ,'https://news.google.com/rss/topics/CAAqJggKIiBDQkFTRWdvSUwyMHZNRGx1YlY4U0FtVnVHZ0pWVXlnQVAB?hl=en-US&gl=US&ceid=US:en'
+        ,'http://feeds.reuters.com/reuters/businessNews'
+        ,'http://feeds.reuters.com/reuters/companyNews'
+        ,'http://feeds.reuters.com/Reuters/worldNews'
+        ,'https://rss.cbc.ca/lineup/canada-calgary.xml'
+        ,'https://rss.cbc.ca/lineup/canada-edmonton.xml'
+        ,'https://rss.cbc.ca/lineup/business.xml'
+        ,'https://rss.cbc.ca/lineup/politics.xml'
+        ,'https://www.theglobeandmail.com/?service=rss'
+        ,'http://feeds.feedburner.com/FP_TopStories'
+        ,'https://o.canada.com/feed/'
+        ,'https://www.dailyheraldtribune.com/feed'
+        ,'https://www.bankofcanada.ca/valet/fx_rss/FXUSDCAD'
+        ,'https://www.bankofcanada.ca/content_type/bos/feed/'
+        ,'https://www.highriveronline.com/rss/news'
+        ,'https://www.highriveronline.com/rss/ag-news'
+        ,'http://banff.ca/support/pages.xml'
+        ,'https://www.wetaskiwin.ca/RSSFeed.aspx?ModID=76&CID=All-0'
+        ,'https://discoverairdrie.com/rss/news'
+        ,'https://lacombeonline.com/rss/news'
+    ]
 
-	feeds = [] # list of feed objects
-	posts = []
+    feeds = [] # list of feed objects
+    posts = []
 
-	for url in rss:
-		feed = feedparser.parse(url)
-		for post in feed.entries:
-			posts.append((today,post.title, post.link, post.summary))
+    for url in rss:
+        local_fulltext_url = 'http://localhost:8000/makefulltextfeed.php?url={}&max={}&links=footnotes&exc=1&submit=Create+Feed'.format(url.replace('/','%2F'),MAX_RESULTS)
+        feed = feedparser.parse(local_fulltext_url)
+        for post in feed.entries:
+            posts.append((today,post.title, post.link, post.summary))
 
-	df = pd.DataFrame(posts, columns=['date','title', 'link', 'summary']) # pass data to init
-	df.summary = df.summary.replace(r'<[^>]*>','',regex=True)
-	df = df.drop_duplicates(['summary'])
+    df = pd.DataFrame(posts, columns=['date','title', 'link', 'summary']) # pass data to init
+    df.summary = df.summary.replace(r'<[^>]*>','',regex=True)
+    df = df.drop_duplicates(['summary'])
 
-	sql.save(df)
-	#print (sql.query())
+    sql.save(df)
+    #print (sql.query())
 
 #fetch_articles()
 classify.article()
