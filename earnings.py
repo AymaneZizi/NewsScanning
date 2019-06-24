@@ -15,6 +15,10 @@ import pickle
 import tensorflow_hub as hub
 import tensorflow as tf
 
+from sklearn.datasets import fetch_20newsgroups
+newsgroups_train = fetch_20newsgroups(subset='train')
+#https://scikit-learn.org/0.19/datasets/twenty_newsgroups.html
+
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import f1_score
@@ -183,21 +187,23 @@ def classy():
 
     sentence = '''Boeing CEO Dennis Muilenburg will have his work cut out for him at the Paris Air Show this week as he tries to reassure airlines and industry partners over the fate of its flagship 737 MAX plane, indefinitely grounded after two fatal crashes.Aviation regulators meeting last month were unable to determine when the popular jet might again be allowed to fly, causing costly headaches for airlines worldwide."An air show is a good opportunity to connect with customers, suppliers and fellow aerospace manufacturers to strengthen our partnerships and drive industry safety," Muilenburg posted on Twitter over the weekend.He has already apologised and vowed to come up with a fix for the 737 MAX's automated anti-stall system, blamed for an Ethiopian Airlines crash in March and an Indonesian Lion Air crash in October, which together claimed 346 lives.But in comments to journalists later Sunday he acknowledged the work they still had to do."We have work to do to win and regain the trust of the public," said Muilenburg."We come to this salon focussed on safety. We come with a sense of humility and learning, still confident in our market -- but it's a humble confidence."But reports that US safety regulators may have let Boeing engineers self-certify some of the plane's equipment have battered confidence in the company."It's had a very clear impact on Boeing's brand and reputation," said Pascal Fabre at the consulting firm Alix Partners.The crisis has also rattled pilots as well as national aviation regulators who worry about a lack of sufficient oversight at the American heavyweight.And on the financial front, it could provide an opening for archrival Airbus to win over new customers for its own A320 family of single-aisle jets, which constitute by far the biggest share of airlines' fleets.- No quick fix -Alongside the nearly 2,500 firms descending on the Bourget airport north of Paris this week will be nearly 290 official delegations, many of which will probably want a word with Muilenburg.He is facing calls for compensation by airlines who have had to find other planes or cancel flights outright after their 737s were grounded.In late April, Boeing estimated the crisis would cost it $1 billion, but the bill will surely climb the longer the planes stay on the ground.Families of the victims of the Ethiopian Airlines and Lion Air crashes may also sue for damages if Boeing is found to have been negligent.And many of its suppliers are also seething. General Electric, whose CFM unit makes the 737's engines with its French partner Safran, has said the groundings could cost it $200 million to $300 million in the second quarter alone.Alexandre de Juniac, director general of the International Air Transport Association (IATA), has said certification might not come before August.But some airlines aren't taking any chances, with American Airlines cancelling last week all its 737 MAX flights through to September 3.Until now global regulators have relied on a system of mutual reciprocity for certifying planes, but the EU, Canada and Brazil have indicated they will carry out their own inspection of any fix for the 737 MAX."Our hope is that we'll have a broad international alignment with the FAA" on when to resume the flights, Muilenburg said at an investor conference in New York last month, referring to the US Federal Aviation Administration.Boeing now has 140 737 MAXs parked on its tarmac waiting for delivery, and has had to reduce monthly production to 42 planes from 52 previously.'''
     
-    # sp = spacy.load('en_core_web_md')
-    # sen = sp(sentence)
-    # print (sen.ents)
+    sp = spacy.load('en_core_web_md')
+    sen = sp(sentence)
+    print (sen.ents)
     
-    # for ent in sen.ents:
-        # print(ent.text,ent.label_)
+    for ent in sen.ents:
+        print(ent.text,ent.label_)
     
     
     
-    predictor = Predictor.from_path("https://s3-us-west-2.amazonaws.com/allennlp/models/ner-model-2018.12.18.tar.gz")
-    p = predictor.predict(sentence=sentence)
-    t = predictor
+    # predictor = Predictor.from_path("https://s3-us-west-2.amazonaws.com/allennlp/models/ner-model-2018.12.18.tar.gz")
+    # p = predictor.predict(sentence=sentence)
+    # t = predictor
     
-    print (p.keys())
-
+    # new = list(zip(p['tags'],p['words']))
+    
+    # for pair in new:
+        # print (pair)
 
   
 def fetch_articles(MAX_RESULTS=100):
