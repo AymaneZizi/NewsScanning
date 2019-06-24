@@ -264,6 +264,9 @@ classy()
 '''
 bonus m-lab downloads query!
 
+https://console.cloud.google.com/bigquery?project=measurement-lab&p=measurement-lab&d=_1a2a889c5dc1d41433ed5518e235aebfb272daa5&t=anona495430c_da01_4bdf_aeaa_349ad9375a81&page=table
+^use that one, it's more up to date.
+
 SELECT
 count(*), connection_spec.client.network.asn,
 avg(8 * (web100_log_entry.snap.HCThruOctetsAcked /
