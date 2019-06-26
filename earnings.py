@@ -1,7 +1,8 @@
 import os
 import re
+import json
 import sqlite3
-import pymongo
+from pymongo import MongoClient
 import datetime
 import feedparser
 import pandas as pd
@@ -59,18 +60,22 @@ class mongo:
     '''//////////////////////////////
     -- article meta tags stored here --
     //////////////////////////////'''
-    def save(post_data={}):
+    
+    def save(df):
 
-        client = pymongo.MongoClient()
-        db = client.article_tags
+        try:
+            client = MongoClient('localhost',27017) #Replace mongo db name
+
+        except Exception as e:
+            print (e)
         
-        post_data = {
-            'entities':'',
-            'category':'',
-            'other':''
-            }
-
-        result = post.insert_one(post_data)
+        db = client.data
+        collection = db.articles
+        
+        records = df.to_dict('index')
+        collection.insert_one(records)
+        
+        print ('Data saved')
 
     def query(find={}):
         
@@ -214,31 +219,7 @@ def fetch_articles(MAX_RESULTS=100):
     -- list of feeds to scrape --
     //////////////////////////////'''
     
-    rss = [
-        'https://www.yahoo.com/news/rss/'
-        ,'https://www.globenewswire.com/RssFeed/subjectcode/13-Earnings%20Releases%20And%20Operating%20Results/feedTitle/GlobeNewswire%20-%20Earnings%20Releases%20And%20Operating%20Results'
-        ,'http://newsrss.bbc.co.uk/rss/newsonline_uk_edition/front_page/rss.xml'
-        ,'https://news.google.com/rss/topics/CAAqJggKIiBDQkFTRWdvSUwyMHZNRGx1YlY4U0FtVnVHZ0pWVXlnQVAB?hl=en-US&gl=US&ceid=US:en'
-        ,'http://feeds.reuters.com/reuters/businessNews'
-        ,'http://feeds.reuters.com/reuters/companyNews'
-        ,'http://feeds.reuters.com/Reuters/worldNews'
-        ,'https://rss.cbc.ca/lineup/canada-calgary.xml'
-        ,'https://rss.cbc.ca/lineup/canada-edmonton.xml'
-        ,'https://rss.cbc.ca/lineup/business.xml'
-        ,'https://rss.cbc.ca/lineup/politics.xml'
-        ,'https://www.theglobeandmail.com/?service=rss'
-        ,'http://feeds.feedburner.com/FP_TopStories'
-        ,'https://o.canada.com/feed/'
-        ,'https://www.dailyheraldtribune.com/feed'
-        ,'https://www.bankofcanada.ca/valet/fx_rss/FXUSDCAD'
-        ,'https://www.bankofcanada.ca/content_type/bos/feed/'
-        ,'https://www.highriveronline.com/rss/news'
-        ,'https://www.highriveronline.com/rss/ag-news'
-        ,'http://banff.ca/support/pages.xml'
-        ,'https://www.wetaskiwin.ca/RSSFeed.aspx?ModID=76&CID=All-0'
-        ,'https://discoverairdrie.com/rss/news'
-        ,'https://lacombeonline.com/rss/news'
-    ]
+    rss = pd.read_csv('feeds.csv')['url'].tolist()
 
     feeds = [] # list of feed objects
     posts = []
@@ -253,36 +234,10 @@ def fetch_articles(MAX_RESULTS=100):
     df.summary = df.summary.replace(r'<[^>]*>','',regex=True)
     df = df.drop_duplicates(['summary'])
 
-    sql.save(df)
+    #sql.save(df)
+    mongo.save(df)
     #print (sql.query())
 
-#fetch_articles()
+fetch_articles()
 #classify.article()
 classy()
-
-
-'''
-bonus m-lab downloads query!
-
-https://console.cloud.google.com/bigquery?project=measurement-lab&p=measurement-lab&d=_1a2a889c5dc1d41433ed5518e235aebfb272daa5&t=anona495430c_da01_4bdf_aeaa_349ad9375a81&page=table
-^use that one, it's more up to date.
-
-SELECT
-count(*), connection_spec.client.network.asn,
-avg(8 * (web100_log_entry.snap.HCThruOctetsAcked /
-    (web100_log_entry.snap.SndLimTimeRwin +
-    web100_log_entry.snap.SndLimTimeCwnd +
-    web100_log_entry.snap.SndLimTimeSnd))) AS download_Mbps,
-    connection_spec.client_geolocation.city,
-    connection_spec.client_geolocation.region,
-    avg(connection_spec.client_geolocation.latitude) AS latitude,
-    avg(connection_spec.client_geolocation.longitude) AS longitude
-FROM `measurement-lab.ndt.web100`
-WHERE connection_spec.client_geolocation.country_name='United States' AND  log_time > "2019-01-01" AND connection_spec.client_geolocation.city IS NOT NULL
-AND ((web100_log_entry.snap.SndLimTimeRwin +
-    web100_log_entry.snap.SndLimTimeCwnd +
-    web100_log_entry.snap.SndLimTimeSnd) >0)
-AND web100_log_entry.snap.HCThruOctetsAcked >= 0
-group by      connection_spec.client.network.asn,connection_spec.client_geolocation.city,
-    connection_spec.client_geolocation.region order by connection_spec.client_geolocation.region,connection_spec.client_geolocation.city
-'''
