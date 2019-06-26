@@ -72,18 +72,24 @@ class mongo:
         db = client.data
         collection = db.articles
         
-        records = df.to_dict('index')
+        records = df.to_dict('records')
         collection.insert_one(records)
         
         print ('Data saved')
 
     def query(find={}):
         
-        find = posts.find_one({
-            'author':'Rando'
-            })
-
-        print (find)
+        try:
+            client = MongoClient()
+        
+        except Exception as e:
+            print (e)
+            
+        db = client.data
+        collection = db.articles
+        
+        df = pd.DataFrame(test.find())
+        print (df)
 
 class classify:
 
