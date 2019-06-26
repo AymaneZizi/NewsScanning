@@ -1,6 +1,7 @@
 import os
 import re
 import json
+import pprint as pp
 import sqlite3
 from pymongo import MongoClient
 import datetime
@@ -72,8 +73,9 @@ class mongo:
         db = client.data
         collection = db.articles
         
-        records = df.to_dict('records')
-        collection.insert_one(records)
+        records = df.to_dict(orient='records')
+        #pp.pprint(records)
+        collection.insert_many(records)
         
         print ('Data saved')
 
@@ -103,7 +105,7 @@ class classify:
         df.clean = df.clean.str.lower()
 
         # remove numbers
-        #df['clean'] = df.clean.str.replace("[0-9]", " ")
+        df['clean'] = df.clean.str.replace("[0-9]", " ")
 
         # remove whitespaces
         df.clean = df.clean.replace('&nbsp;',' ')
@@ -219,6 +221,9 @@ def classy():
   
 def fetch_articles(MAX_RESULTS=100):
 
+    if MAX_RESULTS > 100:
+        MAX_RESULTS = 100;
+
     today = datetime.datetime.now().strftime('%Y-%m-%d')
 
     '''//////////////////////////////
@@ -231,6 +236,7 @@ def fetch_articles(MAX_RESULTS=100):
     posts = []
 
     for url in rss:
+        #fivefilters repo: https://bitbucket.org/fivefilters/full-text-rss/src/master/
         local_fulltext_url = 'http://localhost:8000/makefulltextfeed.php?url={}&max={}&links=footnotes&exc=1&submit=Create+Feed'.format(url.replace('/','%2F'),MAX_RESULTS)
         feed = feedparser.parse(local_fulltext_url)
         for post in feed.entries:
@@ -240,10 +246,12 @@ def fetch_articles(MAX_RESULTS=100):
     df.summary = df.summary.replace(r'<[^>]*>','',regex=True)
     df = df.drop_duplicates(['summary'])
 
+    df.summary = df.summary.apply(lambda x:' '.join(x.split()))
+    
     #sql.save(df)
     mongo.save(df)
     #print (sql.query())
 
-fetch_articles()
+fetch_articles(100)
 #classify.article()
-classy()
+#classy()
