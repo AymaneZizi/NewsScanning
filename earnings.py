@@ -315,17 +315,22 @@ def fetch_articles(MAX_RESULTS=100):
                 posts.append(obj)
     
     df = pd.DataFrame(posts) # pass data to init
-    print (df.head())
-    x
-    df = df.drop_duplicates(['link'])
+    
+    print (list(df))
 
-    df.summary = df.summary.str.replace(r'(\.(?!com|org|ca|net|\d| |\n))','. ')
-    df.summary = df.summary.str.replace(r'((?![A-Z])\. (?![a-z]|[A-Z][a-z]))','.')
-    df.summary = df.summary.str.replace(r'(www\. )','www.')
-    df.summary = df.summary.apply(lambda x:' '.join(x.split()))
+    df.article = df.article.str.replace(r'(\.(?!com|org|ca|net|\d| |\n))','. ')
+    df.article = df.article.str.replace(r'((?![A-Z])\. (?![a-z]|[A-Z][a-z]))','.')
+    df.article = df.article.str.replace(r'(www\. )','www.')
+    
+    df.article = df.article.apply(lambda x:' '.join(x.split()))
+    df.title = df.title.apply(lambda x:' '.join(x.split()))
+    
+    df.date = pd.to_datetime(df.date)
+    
+    print (df.head())
     
     #sql.save(df)
-    mongo.save(df)
+    #mongo.save(df)
     #print (sql.query())
 
 
