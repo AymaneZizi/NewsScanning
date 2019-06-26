@@ -246,6 +246,9 @@ def fetch_articles(MAX_RESULTS=100):
     df.summary = df.summary.replace(r'<[^>]*>','',regex=True)
     df = df.drop_duplicates(['summary'])
 
+    df.summary = df.summary.str.replace(r'(\.(?!com|org|ca|net|\d| |\n))','. ')
+    df.summary = df.summary.str.replace(r'((?![A-Z])\. (?![a-z]|[A-Z][a-z]))','.')
+    df.summary = df.summary.str.replace(r'(www\. )','www.')
     df.summary = df.summary.apply(lambda x:' '.join(x.split()))
     
     #sql.save(df)
