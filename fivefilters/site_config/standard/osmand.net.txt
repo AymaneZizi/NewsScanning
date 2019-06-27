@@ -1,4 +1,0 @@
-title: //div[@class="article"]//h2
-date: //meta/@pubdate
-
-test_url: https://osmand.net/blog/guideline-pt

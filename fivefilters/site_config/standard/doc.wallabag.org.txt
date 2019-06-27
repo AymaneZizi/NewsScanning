@@ -1,3 +1,0 @@
-body: //section[contains(@class, 'normal')]
-
-test_url: https://doc.wallabag.org/en/user/filters.html

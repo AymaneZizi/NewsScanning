@@ -1,3 +1,0 @@
-title: //h2[@itemprop="title"]
-
-test_url: https://www.brucelawson.co.uk/2018/the-practical-value-of-semantic-html/

@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore.js"></script>
+    <script src="http://d3js.org/d3.v3.js"></script>
+    <script src="http://d3js.org/colorbrewer.v1.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crossfilter/1.3.12/crossfilter.js"></script>
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.css">
+
+<style type="text/css">
+
+.btn {
+  font-size: 10px;
+  padding: 3px 6px;
+}
+
+.btn-info {
+  background-color: #999;
+  border-color: #ccc;
+}
+
+.label-info {
+    background-color: #999999;
+}
+
+p {
+    padding: 0px 0px 0px 0px;
+    margin: 0px 0px 0px 0px;
+}
+
+.node circle {
+  cursor: pointer;
+  fill: #fff;
+  stroke: steelblue;
+  stroke-width: 1.5px;
+}
+
+.node text {
+  font-size: 11px;
+}
+
+path.link {
+  fill: none;
+  stroke: #ccc;
+  stroke-width: 1.5px;
+}
+
+#curve-text {
+  font: 14px sans-serif;
+  stroke: url(#gradient);
+  opacity: 0.5;
+}
+
+.tooltip {
+  text-align: center;
+  pointer-events: none;
+  color: #222; 
+  background: #fff; 
+  padding: 1.0em; 
+  text-shadow: #f5f5f5 0 1px 0;
+  border-radius: 2px; 
+  box-shadow: 0px 0px 2px 0px #a6a6a6; 
+  opacity: 0.9; 
+  position: absolute;
+  font-size: 12px;
+}
+
+.table1{
+  display: block;
+  width: 400px;
+  height: 200px;
+  overflow-y: scroll;
+}
+
+body { font-family: 'Helvetica Neue', Helvetica; font-weight: 300; padding: 20px;}
+
+th { text-align: left;
+     color: #fff;
+     font-size: 16px;
+     text-align: center;
+     font-family: Helvetica;
+     font-weight: normal; 
+     height: 20px;
+     border-right-style: solid;
+     border-left-style: solid;
+     border-right-color: rgb(221,221,221);
+     border-left-color: rgb(221,221,221);
+     border-right-width: 1px;
+     border-left-width: 1px;
+     background: #24a9d1;
+     padding: 1px, 2px
+     font-family: Helvetica Neue,Helvetica,Arial,sans-serif;
+}
+
+th, td { padding: 0 1em 0.5ex 0;
+         height: 20px;
+         text-align: center;
+         vertical-align: middle;
+         table-layout: fixed;
+         overflow: hidden;
+}
+
+tbody {
+ width: 200px;
+ height: 400px;
+ overflow: auto;
+}
+
+th.center, td.center { 
+  text-align: center; 
+}
+    
+th.num, td.num { 
+  text-align: right;
+}
+
+button.btn-btn { 
+  background:none;border:none;
+}
+
+.button {
+  display: inline-block;
+  margin: 0;
+  padding: 0.75rem 1rem;
+  border: 0;
+  border-radius: 0.317rem;
+  background-color: #aaa;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 1rem;
+  line-height: 1.5;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  cursor: pointer;
+  -webkit-appearance: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+.button:hover {
+  opacity: 0.85;
+}
+
+.button:active {
+  box-shadow: inset 0 3px 4px hsla(0, 0%, 0%, 0.2);
+}
+
+.button:focus {
+  outline: thin dotted #444;
+  outline: 5px auto -webkit-focus-ring-color;
+  outline-offset: -2px;
+}
+
+#headlines{
+  max-height: 400px;
+  overflow-y:scroll; 
+}
+
+#headlines:hover{
+  cursor:pointer;
+}
+
+.button2 {
+  display: inline-block;
+  margin: 0;
+  padding: 0.75rem 1rem;
+  border: 0;
+  border-radius: 0.317rem;
+  background-color: #aaa;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 1rem;
+  line-height: 1.5;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  cursor: pointer;
+  -webkit-appearance: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+.button2:hover {
+  opacity: 0.85;
+}
+
+.button2:active {
+  box-shadow: inset 0 3px 4px hsla(0, 0%, 0%, 0.2);
+}
+
+.button:2focus {
+  outline: thin dotted #444;
+  outline: 5px auto -webkit-focus-ring-color;
+  outline-offset: -2px;
+}
+
+svg {
+  font: 10px sans-serif;
+}
+
+.axis path,
+.axis line {
+    fill: none;
+    stroke: grey;
+    stroke-width: 1;
+    shape-rendering: crispEdges;
+}
+.x.axis path {
+  fill:none;
+  stroke:#000;
+  shape-rendering: crispEdges;
+}
+
+.line {
+  fill: none;
+  stroke-width: 2.0px;
+}
+
+.lineSent {
+  fill: none;
+  stroke: grey;
+  stroke-width: 1.5px;
+}
+
+.nav-tabs {
+    margin: 0;
+    padding: 10;
+    border: 0;    
+    color: #555555;
+    background-color: #fff;
+
+}
+
+.nav-tabs > li > a {
+    font-size: 12px;
+}
+
+.list-group{
+  margin-bottom: 0px;
+}
+
+.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+    background-color: #24a9d1;
+    color: #ffffff;
+    border: 0px;
+}
+
+
+.alberta-theme .nav.nav-tabs li.active {
+    border-top-width: 7px;
+    border-top-color: #ffffff;
+}
+
+.nav-tabs {
+    border-bottom: 3px solid #24a9d1;
+}
+
+.alberta-theme .nav.nav-tabs li {
+    border-top-color: #ffffff;
+}
+
+.list-group-item{
+  width: 100%;
+}
+
+
+</style>
+</head>
+
+<body>
+<div class="row">
+  <div class="col-md-8" id="dendo" style="margin:5px 5px 5px 5px;"></div>
+  <div class="col-md-3" style="margin:5px 5px 5px 5px">
+    Trending
+    <ul class="nav nav-tabs" role="tablist">
+      <li class="active">
+        <a href="#headlines" role="tab" data-toggle="tab" style="padding: 5px 5px 5px 5px">
+          Headlines
+        </a>
+      </li>
+      <li><a href="#people" role="tab" data-toggle="tab" style="padding: 5px 5px 5px 5px">
+          People
+          </a>
+      </li>
+      <li><a href="#company" role="tab" data-toggle="tab" style="padding: 5px 5px 5px 5px">
+          Companies
+          </a>
+      </li>
+      <li><a href="#keywords" role="tab" data-toggle="tab" style="padding: 5px 5px 5px 5px">
+          Keywords
+        </a>
+      </li>
+      <li><a href="#concepts" role="tab" data-toggle="tab" style="padding: 5px 5px 5px 5px">
+          Concepts
+          </a>
+      </li>
+    </ul>
+    <div class="tab-content">
+      <div class="tab-pane fade in active" id="headlines">
+        <ul class="list-group" id="headlines"></ul>
+      </div>
+      <div class="tab-pane fade" id="people">
+        <ul class="list-group"></ul>
+      </div>
+      <div class="tab-pane fade" id="company" style="list-style-type:none">
+        <ul class="list-group"></ul>
+      </div>
+      <div class="tab-pane fade" id="keywords" style="list-style-type:none">
+        <ul class="list-group"></ul>
+      </div>
+      <div class="tab-pane fade" id="concepts" style="list-style-type:none">
+        <ul class="list-group"></ul>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row" style="margin:5px 5px 5px 5px;">
+  <div class="col-md-8" id="scatter" style="margin:25px 5px 0px 5px;">
+    <ul class="nav nav-tabs" role="tablist">
+      <li class="active">
+        <a href="#sentiment" role="tab" data-toggle="tab" style="padding: 5px 5px 5px 5px">
+          Sentiment
+        </a>
+      </li>
+      <li><a href="#network" role="tab" data-toggle="tab" style="padding: 5px 5px 5px 5px">
+          Network
+          </a>
+      </li>
+    </ul>
+    <div class="tab-content">
+      <div class="tab-pane fade in active" id="sentiment"></div>
+      <div class="tab-pan fade" id="network"></div>
+    </div>
+  </div>
+  <div class="col-md-3" id="highlights" style="margin: 80px 5px 0px 5px;">
+    <p> People </p>
+      <form action="/tagentity" method="GET" id="persontags">
+      </form>
+    <p> Companies </p>
+       <form action="/tagentity" method="GET" id="companytags">
+       </form>
+    <p> Keywords </p>
+       <form action="/tagkeyword" method="GET" id="keywordstags">
+       </form>
+    <p> Concepts </p>
+       <form action="/tagconcept" method="GET" id="conceptstags">
+       </form>
+  </div>    
+</div>  
+      
+<script type="text/javascript">
+
+var json = {{!flare}},
+    trendPerson = {{!response3}},
+    trendCompany = {{!response4}},
+    trendKeywords = {{!response5}},
+    trendConcepts = {{!response6}},
+    headlines = {{!headlines}},
+    person_array = {},
+    company_array = {},
+    concept_array = {},
+    keyword_array = {},
+    people_tags = [],
+    company_tags = [],
+    concept_tags = [],
+    keyword_tags = [],
+    m = [20, 120, 20, 120],
+    w = 1280 - m[1] - m[3],
+    h = 460 - m[0] - m[2],
+    i = 0,
+    root,
+    company_filter = ["TSX", "Reuters", "Twitter", "CBC", "Facebook", "whitecourt Press", "Bloomberg TV", "LinkedIn", "Amazon.com Inc", "Glassdoor"];
+
+shuffle(headlines);
+
+d3.select('#headlines').selectAll("li")
+      .data(headlines)
+    .enter().append("li")
+      .attr("class", "list-group-item")
+     // .attr("type", "button")
+      .html(function(d) { return "<b>" + d.source + "</b>" + ": " + "<p style='color:#41b7d8'>" + d.title.title})
+      .style("font-size", "10px")
+      .on("click", function(d) {
+                window.open(d.title.url);    
+      })
+
+d3.select('#people').selectAll("button")
+      .data(trendPerson)
+    .enter().append("button")
+      .attr("class", "list-group-item")
+     // .attr("type", "button")
+      .text(function(d) { return d._id })
+      .on("click", function(d) { getEntity(d._id)
+                  svg.select("text") 
+                    .text(d._id + " sentiment")});
+
+d3.select('#company').selectAll("button")
+      .data(trendCompany)
+    .enter().append("button")
+      .attr("class", "list-group-item")
+     // .attr("type", "button")
+      .text(function(d) { return d._id })
+      .on("click", function(d) { getEntity(d._id)
+              svg.select("text") 
+                    .text(d._id + " sentiment")});
+
+d3.select('#keywords').selectAll("button")
+      .data(trendKeywords)
+    .enter().append("button")
+      .attr("class", "list-group-item")
+     // .attr("type", "button")
+      .text(function(d) { return d._id })
+      .on("click", function(d) { getKeyword(d._id)
+            svg.select("text") 
+                    .text(d._id + " sentiment")});
+
+d3.select('#concepts').selectAll("button")
+      .data(trendConcepts)
+    .enter().append("button")
+      .attr("class", "list-group-item")
+     // .attr("type", "button")
+      .text(function(d) { return d._id })
+      .on("click", function(d) { getConcept(d._id)
+            svg.select("text") 
+                    .text(d._id + " sentiment")});
+
+root = json;
+  
+var line = d3.svg.line()
+        .interpolate("basis")
+        .x(function(d) { return xScale(d.key); })
+        .y(function(d) { return yScale(d.values); });
+
+var tree = d3.layout.tree()
+    .size([h, w]);
+
+var diagonal = d3.svg.diagonal()
+    .projection(function(d) { return [d.y, d.x]; });
+
+var vis = d3.select("#dendo").append("svg")
+    .attr("width", w + m[1] + m[3])
+    .attr("height", h + m[0] + m[2])
+  .append("svg:g")
+    .attr("transform", "translate(" + m[3] + "," + m[0] + ")");
+
+var tooltip = d3.select("#sentiment")
+      .append("div")
+      .attr("class", "tooltip")
+      .attr("style", "hidden")
+
+var margin_line = {top: 80, right: 80, bottom: 30, left: 50},
+    width_line = 1080 - margin_line.left - margin_line.right,
+    height_line = 500 - margin_line.top - margin_line.bottom;
+    width_high = 390 - margin_line.left - margin_line.right,
+    height_high = 500 - margin_line.top - margin_line.bottom;
+
+var svg = d3.select("#sentiment").append("svg")
+    .attr("width", width_line + margin_line.left + margin_line.right)
+    .attr("height", height_line + margin_line.top + margin_line.bottom)
+  .append("g")
+    .attr("transform", "translate(" + margin_line.left + "," + margin_line.top + ")");
+
+var svg_highlights = d3.select("#highlights").append("svg")
+    .attr("width", width_line + margin_line.left + margin_line.right)
+    .attr("height", height_line + margin_line.top + margin_line.bottom)
+  .append("g")
+    .attr("transform", "translate(" + margin_line.left + "," + margin_line.top + ")");
+
+var svg_bar = d3.select("#network").append("svg")
+    .attr("width", width_line + margin_line.left + margin_line.right)
+    .attr("height", height_line + margin_line.top + margin_line.bottom)
+  .append("g")
+    .attr("transform", "translate(" + margin_line.left + "," + margin_line.top + ")");
+
+var xScale = d3.time.scale()
+    .range([0,width_line - 50]);
+    
+var yScale = d3.scale.linear()
+    .range([height_line,0]);
+
+var xAxis = d3.svg.axis().scale(xScale)
+    .orient("bottom").ticks(5);
+
+var yAxis = d3.svg.axis().scale(yScale)
+    .orient("left").ticks(5);
+
+var color = d3.scale.threshold()
+    .domain([-.8, -.6, -.4, -.2, 0, .2, .4, .6, .8])
+    .range(colorbrewer.RdYlGn[10]);
+
+function shuffle(array) {
+  var currentIndex = array.length, temporaryValue, randomIndex;
+
+  while (0 !== currentIndex) {
+
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+  }
+
+  return array;
+}
+
+
+var cluster = d3.layout.cluster()
+    .size([h, w - 160]);
+
+ var nodes = cluster.nodes(root),
+      links = cluster.links(nodes);
+
+  var link = vis.selectAll(".link")
+      .data(links)
+    .enter().append("path")
+      .attr("class", "link")
+      .attr("d", diagonal);
+
+  var node = vis.selectAll(".node")
+      .data(nodes)
+    .enter().append("g")
+      .attr("class", "node")
+      .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; })
+
+  node.append("circle")
+      .attr("r", 4.5);
+
+  node.append("text")
+      .attr("dx", function(d) { return d.children ? -8 : 8; })
+      .attr("dy", 3)
+      .style("text-anchor", function(d) { return d.children ? "end" : "start"; })
+      .text(function(d) { return d.name; });
+
+
+function createArrays(csv_data) {
+  for (var i=0, count = csv_data.length; i < count; i++){
+    
+    for (var j=0, sub_count = csv_data[i].entities.length; j < sub_count; j++){
+    
+      if (csv_data[i].entities[j].type === 'Person'){
+        if (!(csv_data[i].entities[j].entities_text in person_array))
+          person_array[csv_data[i].entities[j].entities_text] = 1;
+        else
+          person_array[csv_data[i].entities[j].entities_text] += 1;
+
+      }
+    }
+    for (var j=0, sub_count = csv_data[i].entities.length; j < sub_count; j++){
+    
+      if (csv_data[i].entities[j].type === 'Company'){
+        if (!(csv_data[i].entities[j].entities_text in company_array))
+          company_array[csv_data[i].entities[j].entities_text] = 1;
+        else
+          company_array[csv_data[i].entities[j].entities_text] += 1;
+
+      }
+    }
+
+    for (var j=0, sub_count = csv_data[i].concepts.length; j < sub_count; j++){
+        if (!(csv_data[i].concepts[j].concepts_text in concept_array))
+          concept_array[csv_data[i].concepts[j].concepts_text] = 1;
+        else 
+          concept_array[csv_data[i].concepts[j].concepts_text] += 1;
+
+      }
+      
+    for (var j=0, sub_count = csv_data[i].keywords.length; j < sub_count; j++){
+        if (!(csv_data[i].keywords[j].keywords_text in keyword_array))
+          keyword_array[csv_data[i].keywords[j].keywords_text] = 1;
+        else
+          keyword_array[csv_data[i].keywords[j].keywords_text] += 1;
+        
+      }
+    }
+};
+
+function fixDates(data){
+
+     data.forEach(function(d){d['date2'] = new Date(d['date2']['$date'])})
+     data.forEach(function(d){d['date3'] = new Date(d['date3']['$date'])})
+
+     data.forEach(function(d){d['date3'] = d['date3'].toString()})
+     data.forEach(function(d){d['date2'] = d['date2'].toString()})
+
+     data.forEach(function(d){d['date3'] = d['date3'].slice(0, 24)})
+     data.forEach(function(d){d['date2'] = d['date2'].slice(0, 24)})
+
+     parseDate2 = d3.time.format("%a %b %d %Y %H:%M:%S").parse;
+     parseDate = d3.time.format("%Y-%m-%d %H:%M:%S").parse;
+
+     data.forEach(function(d){ d['date2'] = parseDate2(d['date2']); }); 
+     data.forEach(function(d){ d['date3'] = parseDate2(d['date3']); });  
+
+     day = d3.time.day.round;
+
+     data.forEach(function(d){ d['date2'] = day(d['date2'])});
+};
+
+function sortByDateAscending(a, b) {
+        // Dates will be cast to numbers automagically:
+        return a.date2 - b.date2;
+};
+
+function sortArrays(a, b) {
+    // Dates will be cast to numbers automagically:
+    return b.amount - a.amount;
+};
+
+function refreshData(data){
+    console.log(data)
+    fixDates(data);
+
+    data2 = data.sort(sortByDateAscending);
+    data2.forEach(function(d){d['docSentiment']['score'] = +d['docSentiment']['score']});
+    data2.forEach(function(d){ if (isNaN(d['docSentiment']['score']) == true) {
+      d['docSentiment']['score'] = 0;
+    }})
+
+    var avgSentiment = d3.nest()
+            .key(function(d) { return d.date2; })
+            .rollup(function(v) { return d3.mean(v, function(d) { return d.docSentiment.score; }); })
+            .entries(data2);
+
+    avgSentiment.forEach(function(d){d['key'] = d['key'].slice(0, 24)})
+
+    parseSentDate = d3.time.format("%a %b %d %Y %H:%M:%S").parse;  
+
+    avgSentiment.forEach(function(d){ d['key'] = parseSentDate(d['key']); }); 
+
+    xScale.domain(d3.extent(avgSentiment, function(d) { return d.key; }));
+    yScale.domain([d3.min(data2, function(d) { return d.docSentiment.score; })-.1, d3.max(data2, function(d) { return d.docSentiment.score; })+.1]);
+
+    svg.selectAll("g.x.axis")
+          .call(xAxis);
+
+
+    var circle = svg.selectAll("circle")
+            .data(data2, function(d) { return d.url});
+
+        circle.enter().append("circle")
+            .attr("r", 6.0)
+            .style("opacity", 0.8)
+            .attr("cx", function(d) { return xScale(d.date2); })
+            .attr("cy", function(d) { return yScale(d.docSentiment.score); })
+            .style("fill", function(d) { return color(d.docSentiment.score); })
+            .style("stroke", "#808080")
+            .on("click", function(d) {
+                window.open(d.url);    
+             })
+            .on("mouseover", function(d,i) {
+
+              d3.select(this).style("r", 8.0)
+                             .style("opacity", 1)
+          
+              tooltip.classed("hidden", false)
+                .style("left", d3.select(this).attr("cx") + "px")
+                .style("top", d3.select(this).attr("cy") + "px")
+                .html("<b> Date </b>: " + d.date.slice(0,10) + "<br>" + "<b> Title: </b>" + d.title.title);
+              })
+          .on("mouseout", function(d,i) {
+
+            d3.select(this).style("r", 6.0)
+                             .style("opacity", 0.8)
+
+             tooltip.classed("hidden", true)});
+
+        circle.exit().remove();
+
+        svg.select("path")
+                    .attr("d", line(avgSentiment))
+                    .attr("class", "lineSent")
+                    .attr("id", "curve")
+                    .style("stroke-width", 1)
+                    .style("stroke-dasharray", "6,6");
+
+    svg.select("#curve-text")
+        .append("textPath")
+          .attr("xlink:href", "#curve");
+
+    createArrays(data);
+
+    people_tags = [],
+    company_tags = [],
+    concept_tags = [],
+    keyword_tags = [];
+
+    var people_tags2 = $.map(person_array, function(key, value, index) {
+        return {
+          _id: value,
+          amount: key
+    }});
+
+    var company_tags2 = $.map(company_array, function(key, value, index) {
+        return {
+          _id: value,
+          amount: key
+    }});    
+
+    var concept_tags2 = $.map(concept_array, function(key, value, index) {
+        return {
+          _id: value,
+          amount: key
+    }});
+
+    var keyword_tags2 = $.map(keyword_array, function(key, value, index) {
+        return {
+          _id: value,
+          amount: key
+    }});
+
+    people_tags.length = 0;
+    company_tags.length = 0;
+    concept_tags.length = 0;
+    keyword_tags.length = 0;
+
+    console.log(concept_tags2)
+   // company_tags2 = company_filter.filter(function(val) {
+    //  return company_tags2.indexOf(val.key) == -1;
+    //});
+
+    //console.log(company_tags2)
+    //console.log(company_tags3)
+
+    var people_tags = people_tags2.sort(sortArrays).splice(0,10);
+    var company_tags = company_tags2.sort(sortArrays).splice(0,10);
+    var concept_tags = concept_tags2.sort(sortArrays).splice(0,10);
+    var keyword_tags = keyword_tags2.sort(sortArrays).splice(0,10);
+    
+
+    tagsp = d3.select("#persontags").selectAll("input")
+                    .data(people_tags, function(d) { return d._id });
+
+                
+    tagsp.enter().append("input")
+                    .attr("value", function(d) { return d._id })
+                    .attr("name", "person")
+                    .attr('class', 'btn btn-info')
+                    .attr("type", "button")
+                    .on("click", function(d) { getEntity(d._id) 
+                         svg.select("text") 
+                             .text(d._id + " sentiment");});
+
+    tagsp.exit().remove();
+
+
+    tagsc = d3.select("#companytags").selectAll("input")
+                    .data(company_tags, function(d) { return d._id });
+                  
+
+    tagsc.enter().append("input")
+                    .attr("value", function(d) { return d._id })
+                    .attr('class', 'btn btn-info')
+                    .attr("type", "button")
+                    .on("click", function(d) { getEntity(d._id) 
+                         svg.select("text") 
+                             .text(d._id + " sentiment");});
+
+    tagsc.exit().remove();
+
+    tagsk = d3.select("#keywordstags").selectAll("input")
+                        .data(keyword_tags, function(d) { return d._id });
+
+    tagsk.enter().append("input")
+                      .attr("value", function(d) { return d._id })
+                      .attr('class', 'btn btn-info')
+                      .attr("type", "button")
+                      .on("click", function(d) { getKeyword(d._id) 
+                         svg.select("text") 
+                             .text(d._id + " sentiment");});
+
+    tagsk.exit().remove();
+
+    tagsc = d3.select("#conceptstags").selectAll("input")
+                        .data(concept_tags, function(d) { return d._id });
+
+    tagsc.enter().append("input")
+                      .attr("value", function(d) { return d._id })
+                      .attr('class', 'btn btn-info')
+                      .attr("type", "button")
+                      .on("click", function(d) { getConcept(d._id) 
+                         svg.select("text") 
+                             .text(d._id + " sentiment");});
+
+    tagsc.exit().remove();
+
+};
+
+function getCategory(name){
+  $.ajax({
+  type: "GET",
+  url: "/query",
+  dataType: 'json',
+  data: {"name":name},
+  success: refreshData
+  })
+};
+
+function getEntity(name){
+  $.ajax({
+  type: "GET",
+  url: "/tagentity",
+  dataType: 'json',
+  data: {"name":name},
+  success: refreshData
+  })
+};
+
+function getKeyword(name){
+  $.ajax({
+  type: "GET",
+  url: "/tagkeyword",
+  dataType: 'json',
+  data: {"name":name},
+  success: refreshData
+  })
+};
+
+function getConcept(name){
+  $.ajax({
+  type: "GET",
+  url: "/tagconcept",
+  dataType: 'json',
+  data: {"name":name},
+  success: refreshData
+  })
+};
+
+svg.append("text")
+        .attr("x", (width_line / 2))             
+        .attr("y", 0 - (margin_line.top / 2.5))
+        .attr("text-anchor", "middle")  
+        .style("font-size", "16px")
+        .style("fill", "#999999") 
+        .text("Sentiment");
+
+svg.append("text")
+            .attr("text-anchor", "middle")  
+            .attr("transform", "translate("+ (width_line/2) +","+(height_line + (margin_line.top * 1.5))+")")
+            .style("font-size", "14px")
+            .style("fill", "#999999")
+            .text("Date");
+
+svg.append("g")
+        .attr("class", "y axis")
+        .call(yAxis);
+
+svg.append("text")
+            .attr("text-anchor", "middle")
+            .attr("transform", "translate("+ (-margin_line.top *2) +","+(height_line/2)+")rotate(-90)")
+            .style("font-size", "14px")
+            .style("fill", "#999999")
+            .text("Article Sentiment");
+
+svg.append("g")
+        .attr("class", "x axis")
+        .attr("transform", "translate(0," + height_line + ")")
+        .call(xAxis);
+
+svg.append("path")
+        .attr("d", line(avgSentiment))
+        .attr("class", "lineSent")
+        .attr("id", "curve")
+        .style("stroke-width", 1)
+        .style("stroke-dasharray", "6,6");   
+
+  svg.append("#curve-text")
+        .attr("id", "curve-text")
+      .append("textPath")
+        .attr("xlink:href", "#curve")
+        .style("text-anchor","middle")
+        .attr("startOffset", "7.5%") 
+        .text("Average Sentiment");
+
+    </script>
+  </body>
+</html>

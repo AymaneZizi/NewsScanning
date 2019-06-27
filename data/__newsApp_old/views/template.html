@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple tables in D3</title>
+    <meta charset="utf-8">
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="https://rawgit.com/gka/d3-jetpack/master/d3-jetpack.js"></script>
+    <style type="text/css">
+    body { font-family: 'Helvetica Neue', Helvetica; font-weight: 300; padding: 20px;}
+    th { text-align: left; }
+    th, td { padding: 0 1em 0.5ex 0;}
+    th.center, td.center { text-align: center; }
+    th.num, td.num { text-align: right; }
+    </style>
+</head>
+<body>
+    <script>
+
+    // the table rows, typically loaded from data file using d3.csv
+    var movies = [{"count": 12, "_id": "Seymour Schulich"}, {"count": 11, "_id": "Joe Ceci"}, {"count": 10, "_id": "Steve Williams"}, {"count": 10, "_id": "Drew Foster"}, {"count": 10, "_id": "Don Lowry"}, {"count": 10, "_id": "David Eggen"}, {"count": 8, "_id": "Todd McLellan"}, {"count": 8, "_id": "Schulich"}, {"count": 8, "_id": "Rachel Notley"}, {"count": 8, "_id": "McLellan"}, {"count": 8, "_id": "Gavin Young"}, {"count": 8, "_id": "Fred Henry"}, {"count": 7, "_id": "Ryan Nugent-Hopkins"}, {"count": 7, "_id": "Matt Hendricks"}, {"count": 7, "_id": "Henry"}, {"count": 7, "_id": "Fang Zhi"}, {"count": 7, "_id": "Brian Jean"}, {"count": 6, "_id": "Guy Lavallee"}, {"count": 6, "_id": "Gary Bettman"}, {"count": 5, "_id": "Taylor Hall"}, {"count": 5, "_id": "Rosemary Sparks"}, {"count": 5, "_id": "Nugent-Hopkins"}, {"count": 5, "_id": "Naheed Nenshi"}, {"count": 5, "_id": "Marilyn Bergstra"}, {"count": 5, "_id": "Justin Trudeau"}, {"count": 5, "_id": "Jordan Eberle"}, {"count": 5, "_id": "Jim Prentice"}, {"count": 5, "_id": "Hendricks"}, {"count": 5, "_id": "Gallant"}, {"count": 5, "_id": "Foster"}, {"count": 5, "_id": "Erin Chalmers"}, {"count": 5, "_id": "Eggen"}, {"count": 5, "_id": "Connor McDavid"}, {"count": 5, "_id": "Ceci"}, {"count": 5, "_id": "Bonnie Doon"}, {"count": 5, "_id": "Bettman"}, {"count": 5, "_id": "Barbara Daly"}, {"count": 5, "_id": "Bailey"}, {"count": 5, "_id": "Anton Lander"}, {"count": 5, "_id": "Angela Merkel"}, {"count": 4, "_id": "Zack Kassian"}, {"count": 4, "_id": "Wayne Gretzky Drive"}, {"count": 4, "_id": "Teddy Purcell"}, {"count": 4, "_id": "Sparks"}, {"count": 4, "_id": "Patricia Grell"}, {"count": 4, "_id": "Nail Yakupov"}]
+
+    // column definitions
+    var columns = [
+        { head: 'Person', cl: '_id', html: ƒ('_id') },
+        { head: 'count', cl: 'num', html: ƒ('count') }
+        ];
+
+    // create table
+    var table = d3.select('body')
+        .append('table');
+
+    // create table header
+    table.append('thead').append('tr')
+        .selectAll('th')
+        .data(columns).enter()
+        .append('th')
+        .attr('class', ƒ('cl'))
+        .text(ƒ('head'));
+
+    // create table body
+    table.append('tbody')
+        .selectAll('tr')
+        .data(movies).enter()
+        .append('tr')
+        .selectAll('td')
+        .data(function(row, i) {
+            return columns.map(function(c) {
+                // compute cell values for this specific row
+                var cell = {};
+                d3.keys(c).forEach(function(k) {
+                    cell[k] = typeof c[k] == 'function' ? c[k](row,i) : c[k];
+                });
+                return cell;
+            });
+        }).enter()
+        .append('td')
+        .html(ƒ('html'))
+        .attr('class', ƒ('cl'));
+
+    function length() {
+        var fmt = d3.format('02d');
+        return function(l) { return Math.floor(l / 60) + ':' + fmt(l % 60) + ''; };
+    }
+
+
+    </script>
+</body>
+</html>

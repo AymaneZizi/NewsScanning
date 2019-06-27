@@ -1,3 +1,0 @@
-date: //main//time/@datetime
-
-test_url: https://pxlnv.com/blog/bullshit-web/

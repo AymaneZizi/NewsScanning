@@ -1,3 +1,0 @@
-body: //div[contains(concat(' ',normalize-space(@class),' '),' entry-content ')]
-
-test_url: https://fair.org/home/still-manufacturing-consent-an-interview-with-noam-chomsky/

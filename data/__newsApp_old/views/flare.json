@@ -1,0 +1,742 @@
+{  
+   "name":"Economic Development",
+   "children":[  
+      {  
+         "name":"business and industrial",
+         "children":[  
+            {  
+               "name":"advertising and marketing",
+               "children":[  
+                  {  
+                     "name":"advertising"
+                  },
+                  {  
+                     "name":"brand management"
+                  },
+                  {  
+                     "name":"marketing"
+                  },
+                  {  
+                     "name":"public relations"
+                  },
+                  {  
+                     "name":"telemarketing"
+                  }
+               ]
+            },
+            {  
+               "name":"aerospace and defense",
+               "children":[  
+                  {  
+                     "name":"defense industry"
+                  },
+                  {  
+                     "name":"space technology"
+                  }
+               ]
+            },
+            {  
+               "name":"agriculture and forestry",
+               "children":[  
+                  {  
+                     "name":"agriculture"
+                  },
+                  {  
+                     "name":"aquaculture"
+                  },
+                  {  
+                     "name":"crops and seed"
+                  },
+                  {  
+                     "name":"farms and ranches"
+                  },
+                  {  
+                     "name":"food production"
+                  },
+                  {  
+                     "name":"forestry"
+                  },
+                  {  
+                     "name":"horticulture"
+                  },
+                  {  
+                     "name":"livestock"
+                  },
+                  {  
+                     "name":"organic farming"
+                  }
+               ]
+            },
+            {  
+               "name":"automation",
+               "children":[  
+                  {  
+                     "name":"robotics"
+                  }
+               ]
+            },
+            {  
+               "name":"biomedical"
+            },
+            {  
+               "name":"business news"
+            },
+            {  
+               "name":"business operations",
+               "children":[  
+                  {  
+                     "name":"business plans"
+                  },
+                  {  
+                     "name":"human resources",
+                     "children":[  
+                        {  
+                           "name":"compensation and benefits"
+                        },
+                        {  
+                           "name":"payroll services"
+                        }
+                     ]
+                  },
+                  {  
+                     "name":"management",
+                     "children":[  
+                        {  
+                           "name":"business process"
+                        },
+                        {  
+                           "name":"project management"
+                        },
+                        {  
+                           "name":"supply chain management"
+                        }
+                     ]
+                  }
+               ]
+            },
+            {  
+               "name":"business software"
+            },
+            {  
+               "name":"chemicals industry",
+               "children":[  
+                  {  
+                     "name":"adhesives"
+                  },
+                  {  
+                     "name":"cleaning agents"
+                  },
+                  {  
+                     "name":"dyes and pigments"
+                  },
+                  {  
+                     "name":"plastics and polymers"
+                  }
+               ]
+            },
+            {  
+               "name":"company",
+               "children":[  
+                  {  
+                     "name":"annual report"
+                  },
+                  {  
+                     "name":"bankruptcy"
+                  },
+                  {  
+                     "name":"earnings"
+                  },
+                  {  
+                     "name":"joint venture"
+                  },
+                  {  
+                     "name":"merger and acquisition"
+                  }
+               ]
+            },
+            {  
+               "name":"construction"
+            },
+            {  
+               "name":"energy",
+               "children":[  
+                  {  
+                     "name":"coal"
+                  },
+                  {  
+                     "name":"electricity"
+                  },
+                  {  
+                     "name":"natural gas"
+                  },
+                  {  
+                     "name":"nuclear power",
+                     "children":[  
+                        {  
+                           "name":"nuclear accident"
+                        }
+                     ]
+                  },
+                  {  
+                     "name":"oil",
+                     "children":[  
+                        {  
+                           "name":"diesel fuel"
+                        },
+                        {  
+                           "name":"oil and gas prices"
+                        },
+                        {  
+                           "name":"oil company"
+                        }
+                     ]
+                  },
+                  {  
+                     "name":"renewable energy",
+                     "children":[  
+                        {  
+                           "name":"biofuel"
+                        },
+                        {  
+                           "name":"fuel cell"
+                        },
+                        {  
+                           "name":"geothermal energy"
+                        },
+                        {  
+                           "name":"hydroelectric energy"
+                        },
+                        {  
+                           "name":"solar energy"
+                        },
+                        {  
+                           "name":"wind energy"
+                        }
+                     ]
+                  }
+               ]
+            },
+            {  
+               "name":"fashion industry"
+            },
+            {  
+               "name":"food industry"
+            },
+            {  
+               "name":"green solutions"
+            },
+            {  
+               "name":"hospitality industry",
+               "children":[  
+                  {  
+                     "name":"event planning"
+                  },
+                  {  
+                     "name":"food service"
+                  }
+               ]
+            },
+            {  
+               "name":"iron and steel industry"
+            },
+            {  
+               "name":"logistics",
+               "children":[  
+                  {  
+                     "name":"air freight"
+                  },
+                  {  
+                     "name":"freight train"
+                  }
+               ]
+            },
+            {  
+               "name":"manufacturing"
+            },
+            {  
+               "name":"metals"
+            },
+            {  
+               "name":"mining industry"
+            },
+            {  
+               "name":"paper industry"
+            },
+            {  
+               "name":"pharmaceutical industry"
+            },
+            {  
+               "name":"publishing"
+            },
+            {  
+               "name":"record company"
+            },
+            {  
+               "name":"shipbuilding"
+            },
+            {  
+               "name":"tanning"
+            },
+            {  
+               "name":"textile industry"
+            },
+            {  
+               "name":"war industry",
+               "children":[  
+                  {  
+                     "name":"weaponry"
+                  }
+               ]
+            }
+         ]
+      },
+      {  
+         "name":"careers",
+         "children":[  
+            {  
+               "name":"job fairs"
+            },
+            {  
+               "name":"job search"
+            }
+         ]
+      },
+      {  
+         "name":"finance",
+         "children":[  
+            {  
+               "name":"bank",
+               "children":[  
+                  {  
+                     "name":"atms"
+                  },
+                  {  
+                     "name":"bank account"
+                  },
+                  {  
+                     "name":"checks"
+                  }
+               ]
+            },
+            {  
+               "name":"financial news"
+            }
+         ]
+      },
+      {  
+         "name":"law, govt and politics",
+         "children":[  
+                  {  
+                     "name":"government",
+                     "children":[  
+                        {  
+                           "name":"courts and judiciary"
+                        },
+                        {  
+                           "name":"embassies and consulates"
+                        },
+                        {  
+                           "name":"executive branch"
+                        },
+                        {  
+                           "name":"government agencies"
+                        },
+                        {  
+                           "name":"government contracting and procurement"
+                        },
+                        {  
+                           "name":"heads of state"
+                        },
+                        {  
+                           "name":"legislative"
+                        },
+                        {  
+                           "name":"parliament"
+                        },
+                        {  
+                           "name":"state and local government"
+                        }
+                     ]
+                  },
+                  {  
+                     "name":"immigration"
+                  },
+                  {  
+                     "name":"politics",
+                     "children":[  
+                        {  
+                           "name":"domestic policy"
+                        },
+                        {  
+                           "name":"elections",
+                           "children":[  
+                              {  
+                                 "name":"local elections"
+                              },
+                              {  
+                                 "name":"presidential elections"
+                              },
+                              {  
+                                 "name":"referendums"
+                              }
+                           ]
+                        },
+                        {  
+                           "name":"foreign policy"
+                        },
+                        {  
+                           "name":"lobbying"
+                        },
+                        {  
+                           "name":"political parties"
+                        }
+                     ]
+                  }
+               ]
+      },
+      {  
+         "name":"real estate",
+         "children":[  
+            {  
+               "name":"buying and selling homes"
+            }
+         ]
+      },
+      {  
+         "name":"science",
+         "children":[  
+            {  
+               "name":"biology",
+               "children":[  
+                  {  
+                     "name":"biotechnology"
+                  },
+                  {  
+                     "name":"botany"
+                  },
+                  {  
+                     "name":"breeding"
+                  },
+                  {  
+                     "name":"cytology"
+                  },
+                  {  
+                     "name":"marine biology"
+                  },
+                  {  
+                     "name":"molecular biology"
+                  },
+                  {  
+                     "name":"zoology",
+                     "children":[  
+                        {  
+                           "name":"endangered species"
+                        },
+                        {  
+                           "name":"entomology"
+                        },
+                        {  
+                           "name":"ornithology"
+                        }
+                     ]
+                  }
+               ]
+            },
+            {  
+               "name":"chemistry",
+               "children":[  
+                  {  
+                     "name":"organic chemistry"
+                  }
+               ]
+            },
+            {  
+               "name":"computer science",
+               "children":[  
+                  {  
+                     "name":"artificial intelligence"
+                  },
+                  {  
+                     "name":"cryptography"
+                  },
+                  {  
+                     "name":"distributed systems"
+                  },
+                  {  
+                     "name":"information science"
+                  },
+                  {  
+                     "name":"software engineering"
+                  }
+               ]
+            },
+            {  
+               "name":"ecology",
+               "children":[  
+                  {  
+                     "name":"environmental disaster"
+                  },
+                  {  
+                     "name":"pollution"
+                  },
+                  {  
+                     "name":"waste management",
+                     "children":[  
+                        {  
+                           "name":"recycling"
+                        },
+                        {  
+                           "name":"waste disposal"
+                        }
+                     ]
+                  }
+               ]
+            },
+            {  
+               "name":"engineering"
+            },
+            {  
+               "name":"geography",
+               "children":[  
+                  {  
+                     "name":"cartography"
+                  },
+                  {  
+                     "name":"topography"
+                  }
+               ]
+            },
+            {  
+               "name":"geology",
+               "children":[  
+                  {  
+                     "name":"mineralogy"
+                  },
+                  {  
+                     "name":"seismology",
+                     "children":[  
+                        {  
+                           "name":"earthquakes"
+                        }
+                     ]
+                  },
+                  {  
+                     "name":"volcanology",
+                     "children":[  
+                        {  
+                           "name":"volcanic eruptions"
+                        }
+                     ]
+                  }
+               ]
+            },
+            {  
+               "name":"mathematics",
+               "children":[  
+                  {  
+                     "name":"algebra"
+                  },
+                  {  
+                     "name":"arithmetic"
+                  },
+                  {  
+                     "name":"geometry"
+                  },
+                  {  
+                     "name":"statistics"
+                  }
+               ]
+            },
+            {  
+               "name":"medicine",
+               "children":[  
+                  {  
+                     "name":"cardiology"
+                  },
+                  {  
+                     "name":"dermatology"
+                  },
+                  {  
+                     "name":"embryology"
+                  },
+                  {  
+                     "name":"genetics"
+                  },
+                  {  
+                     "name":"immunology"
+                  },
+                  {  
+                     "name":"medical research"
+                  },
+                  {  
+                     "name":"oncology"
+                  },
+                  {  
+                     "name":"orthopedics"
+                  },
+                  {  
+                     "name":"pediatrics"
+                  },
+                  {  
+                     "name":"pharmacology"
+                  },
+                  {  
+                     "name":"physiology"
+                  },
+                  {  
+                     "name":"psychology and psychiatry",
+                     "children":[  
+                        {  
+                           "name":"psychoanalysis"
+                        }
+                     ]
+                  },
+                  {  
+                     "name":"surgery",
+                     "children":[  
+                        {  
+                           "name":"cosmetic surgery"
+                        },
+                        {  
+                           "name":"transplants"
+                        }
+                     ]
+                  },
+                  {  
+                     "name":"veterinary medicine"
+                  }
+               ]
+            },
+            {  
+               "name":"phyiscs",
+               "children":[  
+                  {  
+                     "name":"atomic physics"
+                  }
+               ]
+            },
+            {  
+               "name":"physics",
+               "children":[  
+                  {  
+                     "name":"astrophysics"
+                  },
+                  {  
+                     "name":"electromagnetism"
+                  },
+                  {  
+                     "name":"hydraulics"
+                  },
+                  {  
+                     "name":"nanotechnology"
+                  },
+                  {  
+                     "name":"optics"
+                  },
+                  {  
+                     "name":"space and astronomy"
+                  },
+                  {  
+                     "name":"thermodynamics"
+                  }
+               ]
+            },
+            {  
+               "name":"social science",
+               "children":[  
+                  {  
+                     "name":"anthropology"
+                  },
+                  {  
+                     "name":"history",
+                     "children":[  
+                        {  
+                           "name":"ancient history"
+                        },
+                        {  
+                           "name":"archaeology"
+                        },
+                        {  
+                           "name":"genealogy"
+                        },
+                        {  
+                           "name":"heraldry"
+                        },
+                        {  
+                           "name":"medieval history"
+                        },
+                        {  
+                           "name":"modern history"
+                        },
+                        {  
+                           "name":"prehistory"
+                        }
+                     ]
+                  },
+                  {  
+                     "name":"linguistics",
+                     "children":[  
+                        {  
+                           "name":"translation"
+                        }
+                     ]
+                  },
+                  {  
+                     "name":"pedagogy"
+                  },
+                  {  
+                     "name":"philosophy",
+                     "children":[  
+                        {  
+                           "name":"ethics"
+                        }
+                     ]
+                  },
+                  {  
+                     "name":"sociology"
+                  }
+               ]
+            },
+            {  
+               "name":"weather",
+               "children":[  
+                  {  
+                     "name":"meteorological disaster",
+                     "children":[  
+                        {  
+                           "name":"flood"
+                        },
+                        {  
+                           "name":"hurricane"
+                        },
+                        {  
+                           "name":"tornado"
+                        }
+                     ]
+                  }
+               ]
+            }
+         ]
+      },
+      {  
+         "name":"society",
+         "children":[  
+            {  
+               "name":"work",
+               "children":[  
+                  {  
+                     "name":"contracts"
+                  },
+                  {  
+                     "name":"unemployment"
+                  },
+                  {  
+                     "name":"unions"
+                  }
+               ]
+            }
+         ]
+      }
+     
+   ]
+}

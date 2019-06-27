@@ -1,3 +1,0 @@
-body: //div[contains(concat(' ',normalize-space(@class),' '),' post-page-content ')]
-
-test_url: https://www.cashless.pl/5465-revolut-kryzys

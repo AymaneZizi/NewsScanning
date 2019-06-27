@@ -1,4 +1,0 @@
-title: //h1
-body: //div[@class='section']
-
-prune: no

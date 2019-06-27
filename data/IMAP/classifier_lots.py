@@ -1,0 +1,64 @@
+from __future__ import print_function
+from sklearn.datasets import load_files
+from sklearn.feature_extraction.text import TfidfTransformer
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.naive_bayes import MultinomialNB
+from sklearn.pipeline import Pipeline
+from sklearn.linear_model import SGDClassifier
+from sklearn.svm import LinearSVC
+from sklearn import metrics
+from sklearn.grid_search import GridSearchCV
+from pprint import pprint
+from time import time
+from sklearn.externals import joblib
+import pickle
+import logging
+import numpy as np
+
+test_case = load_files('reuter2/training')
+
+count_vect = CountVectorizer(decode_error='ignore',strip_accents='unicode')
+X_train_counts = count_vect.fit_transform(test_case.data)
+X_train_counts.shape
+
+tfidf_transformer = TfidfTransformer()
+X_train_tfidf = tfidf_transformer.fit_transform(X_train_counts)
+X_train_tfidf.shape
+
+clf = MultinomialNB().fit(X_train_tfidf, test_case.target)
+docs_new = ['I like bees', 'Construction of a unique downtown highrise that would provide both living and working space to local artists is still at least a year away from starting, project organizers say.']
+X_new_counts = count_vect.transform(docs_new)
+X_new_tfidf = tfidf_transformer.transform(X_new_counts)
+
+predicted = clf.predict(X_new_tfidf)
+
+for doc, category in zip(docs_new, predicted):
+    print('%r => %s' % (doc, test_case.target_names[category]))
+
+text_clf = Pipeline([
+    ('vect', CountVectorizer(decode_error='ignore')),
+    ('tfidf', TfidfTransformer()),
+    ('clf', MultinomialNB()),
+])
+
+parameters = {
+    'vect__max_df': (0.5),
+     'vect__max_features': (5000),
+     'vect__ngram_range': (1, 1),  # unigrams or bigrams
+     'tfidf__use_idf': (False),   
+     'clf__alpha': (1.0),
+     'clf__fit_prior': "false"
+}
+
+_ = text_clf.fit(test_case.data, test_case.target)
+
+real_test = load_files('reuter2/test')
+docs_test = real_test.data
+predicted = text_clf.predict(docs_test)
+verified = np.mean(predicted == real_test.target)
+print(verified)
+print(metrics.classification_report(real_test.target, predicted, target_names=real_test.target_names))
+
+#joblib.dump(text_clf, 'SVCinvestmentclassifier.pk1')
+
+
