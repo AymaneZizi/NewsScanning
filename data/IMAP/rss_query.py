@@ -32,6 +32,7 @@ b = list(a.keys())
 c = list(a.values())
 d = len(b)
 
+#swap out for the ELMo model
 clf = joblib.load('/var/www/html/IMAP/classifier/SVCinvestmentclassifier.pk1')
 
 predict = clf.predict(c)
