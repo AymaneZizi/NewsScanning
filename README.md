@@ -1,30 +1,22 @@
 ## News Scanning Application ##
-
-* News RSS feeds
-* Lists of news websites
-* Web-scraping bots
-* Classification algorithms
-* Such fun
-* What database to use? SQLite3? MongoDB?
+![App Flow](architecture.png "Flow Chart")
 
 ## Tech Stack ##
+Back end driven by PHP with some data staging performed in Python.  
+Data stored in a NoSQL database (MongoDB).  
 
-Google has an API for text analysis; USD$3/hr  
-https://console.cloud.google.com/apis/library/language.googleapis.com?id=223648f2-2e7c-4acd-b0ca-782f9021a541&project=measurement-lab
-
-* [ULMFiT](http://nlp.fast.ai/)
 * [GPT-2](https://openai.com/blog/better-language-models/)
+   * could use this to generate analysis.
 * MongoDB
-* SQLite3
 * [fivefilters.org](https://fivefilters.org/)
-    * Utilizes the open-source code from FiveFilters to locally generate full-text RSS feeds
+   * Utilizes the open-source code from FiveFilters to locally generate full-text RSS feeds
 
 Google News API
 * Key: 886a7bf4e2874674a45e3a0fa038d327
 * Documentation: https://newsapi.org/docs/get-started
 
-Front end will run on Python or PHP
-* http://flask.pocoo.org/docs/0.12/deploying/mod_wsgi/
+Google has an API for text analysis; USD$3/hr  
+https://console.cloud.google.com/apis/library/language.googleapis.com?id=223648f2-2e7c-4acd-b0ca-782f9021a541&project=measurement-lab
 
 
 Source Attributions:  
