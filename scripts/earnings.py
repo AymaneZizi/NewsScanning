@@ -10,6 +10,7 @@ import pandas as pd
 
 import spacy #python -m spacy download en
 from spacy import displacy
+from spacy_langdetect import LanguageDetector
 from tqdm import tqdm
 import time
 import pickle
@@ -95,25 +96,62 @@ class mongo:
         df = pd.DataFrame(test.find())
         print (df)
 
-class classify:
+class tap:
 
+    '''
+    Future components:
+    
+    Semantic search engine using deep contextualised language representations from ELMo
+        https://towardsdatascience.com/elmo-contextual-language-embedding-335de2268604
+    BERT
+        http://jalammar.github.io/illustrated-bert/
+    '''
+    def what_language(df):
+    
+        nlp = spacy.load('en')
+        nlp.add_pipe(LanguageDetector(), name='language_detector', last=True)
+
+        df['language'] = df['article'].apply(lambda x: nlp(x)._.language['language'])
+        
+        #we can really only analyze English articles
+        df = df[df['language'] == 'en']
+    
+    def ner(df):
+        #the quality of this is maybe...70% I'd say.
+        nlp = spacy.load('en_core_web_md')
+        df = tap.clean(df)
+    
+        def getner(x):
+            
+            sen = nlp(x)
+            ents = {}
+            
+            for ent in sen.ents:
+                if ent.label_ in ents.keys():
+                    ents[ent.label_].append(ent.text)
+                else:
+                    ents[ent.label_] = [ent.text]
+                    
+            return (ents)
+
+        df['entities'] = df.clean.apply(lambda x: getner(x))
+    
     def clean(df):
+        #cleaning for model training is different than cleaning for NER and such. Set up for NER.
         # remove punctuation marks
         punctuation = '!"#$%&()*+-/:;<=>?@[\\]^_`{|}~'
-
-        df['clean'] = df['summary'].apply(lambda x: ''.join(ch for ch in x if ch not in set(punctuation)))
+        
+        df['clean'] = df.article.str.replace('&nbsp;',' ')
+        df.clean = df.clean.apply(lambda x: ''.join(ch for ch in x if ch not in set(punctuation)))
 
         # convert text to lowercase
-        df.clean = df.clean.str.lower()
+        #df.clean = df.clean.str.lower()
 
         # remove numbers
-        df['clean'] = df.clean.str.replace("[0-9]", " ")
+        #df['clean'] = df.clean.str.replace("[0-9]", " ")
 
         # remove whitespaces
-        df.clean = df.clean.replace('&nbsp;',' ')
         df.clean = df.clean.apply(lambda x:' '.join(x.split()))
-        
-        return (df)
         
         def lemmatize(text):
         
@@ -128,8 +166,8 @@ class classify:
 
             return (output)
             
-        df['clean'] = lemmatize(df['clean'])
-
+        df.clean = lemmatize(df.clean)
+        
         return (df)
 
     def elmo_vectors(x):
@@ -143,7 +181,7 @@ class classify:
             # return average of ELMo features
             return sess.run(tf.reduce_mean(embeddings,1))
     
-    def article(text=''):
+    def classify(text=''):
         os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
         'https://allennlp.org/models'
         
@@ -178,13 +216,9 @@ class classify:
         pickle.dump(elmo_test_new, pickle_out)
         pickle_out.close()
         
-        # load elmo_train_new
-        pickle_in = open("elmo_train_03032019.pickle", "rb")
+        # load Mark's trained pickle file
+        pickle_in = open("lreg_elmo.pickle", "rb")
         elmo_train_new = pickle.load(pickle_in)
-
-        # load elmo_train_new
-        pickle_in = open("elmo_test_03032019.pickle", "rb")
-        elmo_test_new = pickle.load(pickle_in)
         
         #model building and evaluation
         xtrain, xvalid, ytrain, yvalid = train_test_split(elmo_train_new, 
@@ -260,7 +294,7 @@ def fetch_articles(MAX_RESULTS=100):
 
     for url in rss:
         #fivefilters repo: https://bitbucket.org/fivefilters/full-text-rss/src/master/
-        local_fulltext_url = 'http://localhost:8000/makefulltextfeed.php?url={}&max={}&links=0&exc=1&format=json&submit=Create+Feed'.format(url.replace('/','%2F'),MAX_RESULTS)
+        local_fulltext_url = 'http://localhost:8000/data/fivefilters/makefulltextfeed.php?url={}&max={}&links=0&exc=1&format=json&submit=Create+Feed'.format(url.replace('/','%2F'),MAX_RESULTS)
        
         #feed = feedparser.parse(local_fulltext_url)
         feed = json.loads(pd.read_json(local_fulltext_url).to_json())
@@ -309,7 +343,7 @@ def fetch_articles(MAX_RESULTS=100):
                     'date':date,
                     'summary':summary,
                     'article':article,
-                    'tags':tags
+                    'tags':tags,
                     }
 
                 posts.append(obj)
@@ -327,15 +361,19 @@ def fetch_articles(MAX_RESULTS=100):
     
     df.date = pd.to_datetime(df.date)
     
+    #no need to pass it back because df is mutable in shared memory
+    tap.what_language(df) 
+    tap.ner(df)
+    
     print (df.head())
     
     #sql.save(df)
-    #mongo.save(df)
+    mongo.save(df)
     #print (sql.query())
 
 
 #aylien('https://edmontonjournal.com/news/politics/alberta-infrastructure-minister-interviewed-by-rcmp-in-ongoing-investigation')
 
-fetch_articles(3)
-#classify.article()
+fetch_articles(20)
+#tap.classify()
 #classy()

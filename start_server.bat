@@ -3,6 +3,11 @@
 start chrome http://localhost:8000
 if %ERRORLEVEL% neq 0 goto tryMozilla
 
+start cmd /k call mongo.bat
+start cmd /k call python.bat
+
+title News Analytics PHP Server
+
 php -S localhost:8000
 if %ERRORLEVEL% neq 0 goto phpError
 
