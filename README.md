@@ -1,5 +1,5 @@
 ## News Scanning Application ##
-![App Flow](architecture.png "Flow Chart")
+![App Flow](Architecture.png "Flow Chart")
 
 ## Tech Stack ##
 Back end driven by PHP with some data staging performed in Python.  
