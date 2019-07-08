@@ -11,7 +11,7 @@ import pandas as pd
 import spacy #python -m spacy download en
 from spacy import displacy
 from spacy_langdetect import LanguageDetector
-from tqdm import tqdm
+from tqdm import tqdm, trange
 import time
 import pickle
 
@@ -118,6 +118,7 @@ class tap:
     
     def ner(df):
         #the quality of this is maybe...70% I'd say.
+        #https://www.depends-on-the-definition.com/named-entity-recognition-with-bert/ --> might be better
         nlp = spacy.load('en_core_web_md')
         df = tap.clean(df)
     
