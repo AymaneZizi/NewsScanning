@@ -12,7 +12,7 @@ php -S localhost:8000
 if %ERRORLEVEL% neq 0 goto phpError
 
 :tryMozilla
-@rem start firefox https://www.google.co.in/
+@rem start firefox http://localhost:8000
 if %ERRORLEVEL% neq 0 goto browserFail
 
 :phpError
