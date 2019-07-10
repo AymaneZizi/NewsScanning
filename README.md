@@ -12,10 +12,10 @@ In the root directory is 'start_server.bat'. Opening this file will:
 * extract the ZIP file to "C:\_LOCALdata\PHP"
 
 #### You can download MongoDB from [this link](https://fastdl.mongodb.org/win32/mongodb-win32-x86_64-2008plus-ssl-4.0.10.zip) ####
-* extract the ZIP file to "C:\_LOCALdata\Mongo"
-* place [mongo.config](http://gitlab.vnl1209.gov.ab.ca/special-projects/news-scanning/blob/620f6a1162d22eb74258c01e7aaf1831830f9db7/misc/mongo.config) in to "C:\_LOCALdata\Mongo"
+* extract the ZIP file to "C:\_LOCALdata\MongoDB"
+* place [mongo.config](http://gitlab.vnl1209.gov.ab.ca/special-projects/news-scanning/blob/620f6a1162d22eb74258c01e7aaf1831830f9db7/misc/mongo.config) in to "C:\_LOCALdata\MongoDB"
 * you should also download [MongoDB Compass (Version: Community Edition, Platform: Windows 64-bit (Zip))](https://www.mongodb.com/download-center/compass)
-    * extract the ZIP file into its own folder under "C:\_LOCALdata\Mongo\"
+    * extract the ZIP file into its own folder under "C:\_LOCALdata\MongoDB\"
 
 
 
