@@ -5,6 +5,7 @@
 In the root directory is 'start_server.bat'. Opening this file will:
 * launch a PHP and Mongo server, as well as an Anaconda command prompt.
 * open Chrome to "localhost:8000" which displays "index.php"
+* if the Mongo server crashes you need to delete the contents of "data/articles/" and relaunch the .BAT files
 
 #### You can download PHP from [PHP.com](https://windows.php.net/download#php-7.3) ####
 * choose "VC15 x64 Thread Safe" ZIP file
